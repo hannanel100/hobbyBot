@@ -4,6 +4,7 @@ import axios from "axios";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import Button from "../Button";
 import { IoArrowBack, IoRefresh } from "react-icons/io5";
+import Card from "../Card";
 interface Question {
   question: string;
   options: string[];
@@ -211,8 +212,8 @@ function Form() {
     let regex = /\d+\./; // matches any digit followed by a period
     let sentencesArray = data.answer.content.split(regex);
     return (
-      <div className="container mx-auto my-4">
-        <div className="rounded-lg border border-gray-400 p-4">
+      <div className="container mx-auto my-4 space-y-4">
+        <Card>
           {/* split content by bullets, if chars 1. 2. 3. 4. exist */}
           {sentencesArray.map((sentence, index) => {
             return (
@@ -221,23 +222,25 @@ function Form() {
               </p>
             );
           })}
-        </div>
-        <Button onClick={restartHandler}>Restart</Button>
+        </Card>
+        <Button onClick={restartHandler}>
+          Restart <IoRefresh />
+        </Button>
       </div>
     );
   }
   if (mutation.isError) {
     return (
       <div className="container mx-auto my-4">
-        <div className="rounded-lg border border-gray-400 p-4">
+        <Card>
           <p>Something went wrong. Please try again.</p>
-        </div>
+        </Card>
       </div>
     );
   }
   return (
     <div className="container mx-auto my-4 space-y-4">
-      <div className="rounded-lg border border-gray-400 p-4">
+      <Card>
         <h2 className="mb-4 text-xl font-bold">
           {questions[currentQuestion].question}
         </h2>
@@ -267,7 +270,7 @@ function Form() {
             <span>of {questions.length}</span>
           </div>
         </div>
-      </div>
+      </Card>
 
       {currentQuestion > 0 && (
         <div className="flex justify-between">
