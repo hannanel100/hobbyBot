@@ -194,11 +194,12 @@ function Form() {
   const restartHandler = () => {
     setCurrentQuestion(0);
     setAnswers([]);
+    if (mutation.isError || mutation.isSuccess) mutation.reset();
   };
 
   if (mutation.isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex items-center justify-center">
         <div className="flex text-4xl font-bold tracking-tight">
           <span className="mr-4 animate-ping">beep</span>
           <span className="mr-4 animate-pulse">boop</span>
@@ -231,10 +232,13 @@ function Form() {
   }
   if (mutation.isError) {
     return (
-      <div className="container mx-auto my-4">
+      <div className="container mx-auto my-4 space-y-4">
         <Card>
           <p>Something went wrong. Please try again.</p>
         </Card>
+        <Button onClick={restartHandler}>
+          Restart <IoRefresh />
+        </Button>
       </div>
     );
   }
