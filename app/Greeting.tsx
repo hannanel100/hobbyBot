@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Button from "./Button";
 
 import Title from "./Title";
 
@@ -19,12 +20,7 @@ export const Greeting = () => {
         lives and provide a source of relaxation, creativity, and social
         engagement.
       </p>
-      <button
-        className="mx-auto flex justify-center rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-        onClick={() => router.push("/form")}
-      >
-        Start
-      </button>
+      <Button onClick={() => router.push("/form")}>Start</Button>
     </div>
   );
 };

@@ -2,6 +2,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import Button from "../Button";
+import { IoArrowBack, IoRefresh } from "react-icons/io5";
 interface Question {
   question: string;
   options: string[];
@@ -104,7 +106,7 @@ const questions: Question[] = [
     ],
     answer: "",
   },
- 
+
   {
     question: "Do you enjoy gardening or caring for plants?",
     options: [
@@ -149,7 +151,7 @@ const questions: Question[] = [
     question: "How many hobby ideas do you want to see?",
     options: ["1", "2", "3", "4"],
     answer: "",
-  }
+  },
 ];
 function Form() {
   const queryClientLocal = useQueryClient();
@@ -160,11 +162,11 @@ function Form() {
   });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
+
   const handleAnswer = (answer: string) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answer;
     setAnswers(newAnswers);
-
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
@@ -197,22 +199,30 @@ function Form() {
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="flex text-4xl font-bold tracking-tight">
-          <span className="mr-2 animate-ping">beep</span>
-          <span className="mr-2 animate-pulse">boop</span>
+          <span className="mr-4 animate-ping">beep</span>
+          <span className="mr-4 animate-pulse">boop</span>
           <span className="animate-ping">beep</span>
         </div>
       </div>
     );
   }
   if (mutation.isSuccess) {
-    console.log(mutation.data.data);
     const { data }: { data: Answer } = mutation.data;
-    console.log("🚀 ~ file: Form.tsx:214 ~ Form ~ data:", data);
+    let regex = /\d+\./; // matches any digit followed by a period
+    let sentencesArray = data.answer.content.split(regex);
     return (
       <div className="container mx-auto my-4">
         <div className="rounded-lg border border-gray-400 p-4">
-          <p className="text-white">{data.answer.content}</p>
+          {/* split content by bullets, if chars 1. 2. 3. 4. exist */}
+          {sentencesArray.map((sentence, index) => {
+            return (
+              <p key={index} className="mb-4">
+                {`${index !== 0 ? index + ". " : ""}  ${sentence}`}
+              </p>
+            );
+          })}
         </div>
+        <Button onClick={restartHandler}>Restart</Button>
       </div>
     );
   }
@@ -220,7 +230,7 @@ function Form() {
     return (
       <div className="container mx-auto my-4">
         <div className="rounded-lg border border-gray-400 p-4">
-          <p className="text-white">Something went wrong. Please try again.</p>
+          <p>Something went wrong. Please try again.</p>
         </div>
       </div>
     );
@@ -232,15 +242,19 @@ function Form() {
           {questions[currentQuestion].question}
         </h2>
         <div className="flex flex-col">
+          {/* TODO: style this better, maybe get rid of the radio button and just raise opacity of hovered and lower all others */}
           {questions[currentQuestion].options.map((option, index) => (
-            <label key={index} className="mb-2">
+            <label
+              key={index}
+              className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out hover:bg-teal-900 hover:text-teal-50 dark:hover:bg-teal-50 dark:hover:text-teal-900`}
+            >
               <input
                 type="radio"
                 name={`question${currentQuestion}`}
                 value={option}
                 checked={answers[currentQuestion] === option}
                 onChange={() => handleAnswer(option)}
-                className="mr-2"
+                className="mr-2 hidden"
               />
               {option}
             </label>
@@ -248,26 +262,22 @@ function Form() {
         </div>
         {/* find the index of the question and display it */}
         <div className="mx-auto flex justify-center">
-          <div className="text-gray-400">
-            {currentQuestion + 1} of {questions.length}
+          <div>
+            <span className="text-teal-500">{currentQuestion + 1}</span>{" "}
+            <span>of {questions.length}</span>
           </div>
         </div>
       </div>
 
       {currentQuestion > 0 && (
         <div className="flex justify-between">
-          <button
-            className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-            onClick={() => prevQuestion()}
-          >
-            Back
-          </button>
-          <button
-            className="rounded bg-teal-500 py-2 px-4 font-bold text-white hover:bg-teal-700"
-            onClick={restartHandler}
-          >
+          <Button onClick={() => prevQuestion()}>
+            <IoArrowBack /> Back
+          </Button>
+          <Button onClick={restartHandler}>
             Restart
-          </button>
+            <IoRefresh />
+          </Button>
         </div>
       )}
     </div>
