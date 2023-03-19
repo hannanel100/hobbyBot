@@ -253,7 +253,7 @@ function Form() {
           {questions[currentQuestion].options.map((option, index) => (
             <label
               key={index}
-              className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out hover:bg-teal-900 hover:text-teal-50 dark:hover:bg-teal-50 dark:hover:text-teal-900`}
+              className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out md:hover:bg-teal-900 md:hover:text-teal-50 md:dark:hover:bg-teal-50 md:dark:hover:text-teal-900`}
             >
               <input
                 type="radio"
