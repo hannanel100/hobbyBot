@@ -1,4 +1,5 @@
 import { Roboto } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Providers from "./providers";
 import Title from "./Title";
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className="mx-8 mt-8 max-w-md bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
         <Title />
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
