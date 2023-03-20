@@ -5,6 +5,7 @@ import Providers from "./providers";
 import Title from "./Title";
 import AuthContext from "./AuthContext";
 import Navbar from "./Navbar";
+import Image from "next/image";
 export const metadata = {
   title: "HobbyBot",
   description: "An Ai powered app to find you your next hobby",
@@ -26,7 +27,7 @@ export default function RootLayout({
       </head>
       <body className="mt-8 bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
         <AuthContext>
-          <Navbar />
+            <Navbar />
           <div className="mx-8 max-w-md md:mx-auto">
             <Title />
             <Providers>{children}</Providers>
