@@ -3,6 +3,8 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Providers from "./providers";
 import Title from "./Title";
+import AuthContext from "./AuthContext";
+import Navbar from "./Navbar";
 export const metadata = {
   title: "HobbyBot",
   description: "An Ai powered app to find you your next hobby",
@@ -22,10 +24,15 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/icon.png" />
       </head>
-      <body className="mx-8 mt-8 max-w-md bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
-        <Title />
-        <Providers>{children}</Providers>
-        <Analytics />
+      <body className="mt-8 bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
+        <AuthContext>
+          <Navbar />
+          <div className="mx-8 max-w-md md:mx-auto">
+            <Title />
+            <Providers>{children}</Providers>
+          </div>
+          <Analytics />
+        </AuthContext>
       </body>
     </html>
   );

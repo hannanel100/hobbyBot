@@ -1,5 +1,8 @@
 "use client";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 import Button from "./Button";
 import Card from "./Card";
 
@@ -7,6 +10,7 @@ import Title from "./Title";
 
 export const Greeting = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   return (
     <div className="flex flex-col gap-8">
