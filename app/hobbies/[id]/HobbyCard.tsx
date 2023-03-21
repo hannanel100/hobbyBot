@@ -20,7 +20,9 @@ const HobbyCard = ({ data }: Props) => {
           {data.title}
         </h2>
         <p className="mb-4 text-sm text-gray-500">{data.date}</p>
-        <p className="mb-4">{data.content.substring(0, 50)}...</p>
+        <p className="mb-4 first-letter:capitalize">
+          {data.content.substring(0, 50)}...
+        </p>
       </div>
       {isOpen && (
         <div
@@ -30,7 +32,7 @@ const HobbyCard = ({ data }: Props) => {
           <div className=" mx-4 flex flex-col rounded-lg bg-teal-50 p-4 shadow-xl dark:bg-teal-900 md:mx-8 md:max-w-xl lg:mx-auto">
             <h2 className="mb-2 text-2xl font-bold">{data.title}</h2>
             <p className="mb-4 text-sm text-gray-500">{data.date}</p>
-            <p className="mb-4">{data.content}</p>
+            <p className="mb-4 first-letter:capitalize">{data.content}</p>
             <button
               className="tex cursor-pointer self-center rounded-lg bg-teal-500 px-4 py-2 text-white"
               onClick={() => setIsOpen(false)}
