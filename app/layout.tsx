@@ -25,7 +25,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/icon.png" />
       </head>
-      <body className="mt-8 bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
+      <body className="my-8 bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
         <AuthContext>
           <Navbar />
           <div className="mx-8 max-w-2xl md:mx-auto">
