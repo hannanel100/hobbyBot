@@ -4,6 +4,10 @@ import {
   OpenAIApi,
   ChatCompletionResponseMessage,
 } from "openai";
+import prisma from "../../../lib/prismadb";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { Hobby } from "@prisma/client";
 type Prompt = {
   prompt: string;
 };
@@ -14,6 +18,8 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 export async function POST(request: Request) {
   const { prompt } = await request.json();
+  const session = await getServerSession(authOptions);
+
   let answer: string | undefined | ChatCompletionResponseMessage = "";
   console.log("🚀 ~ file: route.ts:8 ~ POST ~ res:", prompt);
   try {
@@ -28,9 +34,24 @@ export async function POST(request: Request) {
         { role: "user", content: prompt },
       ],
     });
-    console.log("🚀 ~ file: route.ts:28 ~ POST ~ chatGPT:", chatGPT);
     const chatGPTAnswer = chatGPT.data.choices[0].message;
     answer = chatGPTAnswer;
+    let regex = /\d+\./; // matches any digit followed by a period
+    let hobbiesArray = answer?.content?.split(regex).slice(1);
+
+    const user = await prisma.user.update({
+      where: { id: session?.user?.id },
+      data: {
+        hobbies: {
+          create: hobbiesArray?.map((hobby) => {
+            return {
+              content: hobby,
+            };
+          }),
+        },
+      },
+    });
+    console.log("🚀 ~ file: route.ts:54 ~ POST ~ user:", user);
     console.log("🚀 ~ file: route.ts:8 ~ POST ~ answer:", answer);
   } catch (error) {
     return NextResponse.json({ error });

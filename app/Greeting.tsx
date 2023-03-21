@@ -1,12 +1,17 @@
 "use client";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 import Button from "./Button";
 import Card from "./Card";
 
 import Title from "./Title";
+import Loader from "./Loader";
 
 export const Greeting = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   return (
     <div className="flex flex-col gap-8">
@@ -23,7 +28,15 @@ export const Greeting = () => {
           relaxation, creativity, and social engagement.
         </p>
       </Card>
-      <Button onClick={() => router.push("/form")}>Start</Button>
+      {status === "authenticated" ? (
+        <Button onClick={() => router.push("/form")}>Start</Button>
+      ) : status === "loading" ? (
+        <Button disabled>
+          <Loader size="sm" />
+        </Button>
+      ) : (
+        <Button onClick={() => signIn("google")}>Sign in</Button>
+      )}
     </div>
   );
 };
