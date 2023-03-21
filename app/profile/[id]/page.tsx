@@ -15,9 +15,9 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
   });
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">Profile Page</h1>
-      <p>Hi {user?.name}, we are happy you`ve decided to join our community!</p>
+    <>
+      <h1 className="mb-8 text-3xl font-bold">Profile Page</h1>
+      <p>Hi {user?.name}! we are happy you`ve decided to join our community!</p>
       <p>
         You currently have {hobbies.length} hobbies! you can check them out
         here:{" "}
@@ -29,7 +29,7 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
         </Link>
       </p>
       <p>This page is still a work in progress...</p>
-    </div>
+    </>
   );
 };
 

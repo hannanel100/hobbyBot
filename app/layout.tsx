@@ -28,8 +28,7 @@ export default function RootLayout({
       <body className="my-8 bg-teal-50 text-teal-900 dark:bg-teal-900 dark:text-teal-50 md:mx-auto">
         <AuthContext>
           <Navbar />
-          <div className="mx-8 max-w-2xl md:mx-auto">
-            <Title />
+          <div className="mx-8 mt-8 max-w-2xl md:mx-auto">
             <Providers>{children}</Providers>
           </div>
           <Analytics />

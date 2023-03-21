@@ -7,6 +7,7 @@ import Button from "./Button";
 import Card from "./Card";
 
 import Title from "./Title";
+import Loader from "./Loader";
 
 export const Greeting = () => {
   const router = useRouter();
@@ -27,7 +28,15 @@ export const Greeting = () => {
           relaxation, creativity, and social engagement.
         </p>
       </Card>
-      <Button onClick={() => router.push("/form")}>Start</Button>
+      {status === "authenticated" ? (
+        <Button onClick={() => router.push("/form")}>Start</Button>
+      ) : status === "loading" ? (
+        <Button disabled>
+          <Loader size="sm" />
+        </Button>
+      ) : (
+        <Button onClick={() => signIn("google")}>Sign in</Button>
+      )}
     </div>
   );
 };

@@ -12,7 +12,7 @@ const HobbiesPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="flex flex-col gap-8">
       <h1 className="text-3xl">Hobbies Page</h1>
-      <ul className="grid gap-4  sm:grid-cols-3">
+      <ul className="grid auto-cols-max place-content-center  gap-4 sm:grid-cols-3">
         {hobbies.map((hobby) => {
           const data = {
             title: hobby.content.split("-")[0],
