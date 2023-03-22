@@ -19,8 +19,9 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
       <h1 className="mb-8 text-3xl font-bold">Profile Page</h1>
       <p>Hi {user?.name}! we are happy you`ve decided to join our community!</p>
       <p>
-        You currently have {hobbies.length} hobbies! you can check them out
-        here:{" "}
+        {hobbies.length === 0
+          ? "You currently have no hobbies! you can add some here:"
+          : `You currently have ${hobbies.length} hobbies! you can check them out here: `}
         <Link
           href={"/hobbies/" + user?.id}
           className="cursor-pointer underline hover:underline sm:no-underline"
