@@ -99,7 +99,9 @@ const Navbar = () => {
                 </button>
               </div>
             ) : status === "loading" ? (
-              <Loader size="sm" />
+              <div className="hidden sm:block">
+                <Loader size="sm" />
+              </div>
             ) : (
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 <button

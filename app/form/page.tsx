@@ -7,10 +7,10 @@ import { IoArrowBack, IoRefresh } from "react-icons/io5";
 import Card from "../Card";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import NumberInput from "../NumberInput";
 interface Question {
   question: string;
   options: string[];
-  answer: string;
 }
 interface Answer {
   answer: {
@@ -22,12 +22,10 @@ const questions: Question[] = [
   {
     question: "What kind of outdoor activities do you enjoy?",
     options: ["Hiking", "Camping", "Fishing", "Biking"],
-    answer: "",
   },
   {
     question: "Do you prefer solitary or group activities?",
     options: ["Solitary", "Group", "Both", "Depends on the activity"],
-    answer: "",
   },
   {
     question: "How much time do you have to dedicate to a hobby?",
@@ -37,22 +35,18 @@ const questions: Question[] = [
       "3-5 hours per week",
       "More than 5 hours per week",
     ],
-    answer: "",
   },
   {
     question: "Do you enjoy creative or analytical pursuits?",
     options: ["Creative", "Analytical", "Both", "Depends on the activity"],
-    answer: "",
   },
   {
     question: "What kind of physical activities do you enjoy?",
     options: ["Running", "Swimming", "Yoga", "Weightlifting"],
-    answer: "",
   },
   {
     question: "Do you prefer indoor or outdoor activities?",
     options: ["Indoor", "Outdoor", "Both", "Depends on the activity"],
-    answer: "",
   },
   {
     question: "How important is socializing to you?",
@@ -62,42 +56,34 @@ const questions: Question[] = [
       "Not important",
       "Depends on the activity",
     ],
-    answer: "",
   },
   {
     question: "Do you enjoy reading or watching movies/TV shows?",
     options: ["Reading", "Watching", "Both", "Neither"],
-    answer: "",
   },
   {
     question: "What kind of music do you enjoy?",
     options: ["Rock", "Pop", "Hip hop", "Classical"],
-    answer: "",
   },
   {
     question: "Do you enjoy working with your hands?",
     options: ["Yes", "No", "Depends on the activity", "I'm not sure"],
-    answer: "",
   },
   {
     question: "Do you enjoy cooking or baking?",
     options: ["Cooking", "Baking", "Both", "Neither"],
-    answer: "",
   },
   {
     question: "Do you enjoy playing games?",
     options: ["Board games", "Video games", "Card games", "Sports games"],
-    answer: "",
   },
   {
     question: "What kind of art do you enjoy?",
     options: ["Drawing", "Painting", "Sculpture", "None"],
-    answer: "",
   },
   {
     question: "Do you enjoy learning about history or science?",
     options: ["History", "Science", "Both", "Neither"],
-    answer: "",
   },
   {
     question: "Do you enjoy traveling?",
@@ -107,7 +93,6 @@ const questions: Question[] = [
       "I don't really care for it",
       "I haven't done it much",
     ],
-    answer: "",
   },
 
   {
@@ -118,7 +103,6 @@ const questions: Question[] = [
       "I don't really do it",
       "I haven't done it much",
     ],
-    answer: "",
   },
   {
     question: "Do you enjoy attending concerts or live events?",
@@ -128,7 +112,6 @@ const questions: Question[] = [
       "I don't really care for it",
       "I haven't done it much",
     ],
-    answer: "",
   },
   {
     question: "Do you enjoy working on DIY projects or home improvement tasks?",
@@ -138,7 +121,6 @@ const questions: Question[] = [
       "I don't really do it",
       "I haven't done it much",
     ],
-    answer: "",
   },
   {
     question: "Do you enjoy practicing or playing musical instruments?",
@@ -148,12 +130,85 @@ const questions: Question[] = [
       "I don't really do it",
       "I haven't done it much",
     ],
-    answer: "",
+  },
+  {
+    question: "Do you enjoy doing puzzles?",
+    options: ["Yes", "No", "Sometimes", "I'm not sure"],
+  },
+  {
+    question: "Do you enjoy writing?",
+    options: ["Fiction", "Non-fiction", "Poetry", "Not really"],
+  },
+  {
+    question: "Do you enjoy dancing?",
+    options: ["Ballroom", "Hip-hop", "Ballet", "None"],
+  },
+  {
+    question: "Do you enjoy woodworking or carpentry?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
+  },
+  {
+    question: "Do you enjoy making crafts or DIY decorations?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
+  },
+  {
+    question: "Do you enjoy playing chess or other strategy games?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
+  },
+  {
+    question: "Do you enjoy singing or playing music with others?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
+  },
+  {
+    question: "Do you enjoy photography?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
+  },
+  {
+    question: "Do you enjoy board or card games?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
+  },
+  {
+    question: "Do you enjoy volunteering or community service?",
+    options: [
+      "Yes, I love it!",
+      "I do it occasionally",
+      "I don't really do it",
+      "I haven't done it much",
+    ],
   },
   {
     question: "How many hobby ideas do you want to see?",
     options: ["1", "2", "3", "4"],
-    answer: "",
   },
 ];
 function Form() {
@@ -167,17 +222,34 @@ function Form() {
   const mutation = useMutation((data: any) => axios.post("/api/form", data));
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
+  const [randomQuestions, setRandomQuestions] = useState<Question[]>([]);
+  const [numQuestions, setNumQuestions] = useState(1);
+  const chooseRandomQuestions = (num: number) => {
+    console.log("🚀 ~ file: page.tsx:227 ~ chooseRandomQuestions ~ num:", num);
+
+    const randomQuestions = [];
+    for (let i = 0; i < num; i++) {
+      const randomIndex = Math.floor(Math.random() * questions.length);
+      randomQuestions.push(questions[randomIndex]);
+      questions.splice(randomIndex, 1);
+    }
+    console.log(
+      "🚀 ~ file: page.tsx:230 ~ chooseRandomQuestions ~ randomQuestions:",
+      randomQuestions
+    );
+    setRandomQuestions(randomQuestions);
+  };
 
   const handleAnswer = (answer: string) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answer;
     setAnswers(newAnswers);
     const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
+    if (nextQuestion < randomQuestions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
       mutation.mutate({
-        prompt: questions
+        prompt: randomQuestions
           .map((question, index) => {
             return `${question.question}: ${newAnswers[index]}`;
           })
@@ -200,6 +272,25 @@ function Form() {
     setAnswers([]);
     if (mutation.isError || mutation.isSuccess) mutation.reset();
   };
+  if (randomQuestions.length === 0) {
+    return (
+      <div className="container mx-auto my-4 space-y-4">
+        <Card>
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <NumberInput
+              label="Number of Questions"
+              value={numQuestions}
+              setValue={setNumQuestions}
+              max={randomQuestions.length}
+            />
+            <Button onClick={() => chooseRandomQuestions(numQuestions)}>
+              Submit
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   if (mutation.isLoading) {
     return (
@@ -233,11 +324,10 @@ function Form() {
     <div className="container mx-auto my-4 space-y-4">
       <Card>
         <h2 className="mb-4 text-xl font-bold">
-          {questions[currentQuestion].question}
+          {randomQuestions[currentQuestion].question}
         </h2>
         <div className="flex flex-col">
-          {/* TODO: style this better, maybe get rid of the radio button and just raise opacity of hovered and lower all others */}
-          {questions[currentQuestion].options.map((option, index) => (
+          {randomQuestions[currentQuestion].options.map((option, index) => (
             <label
               key={index}
               className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out md:hover:bg-teal-900 md:hover:text-teal-50 md:dark:hover:bg-teal-50 md:dark:hover:text-teal-900`}
@@ -258,7 +348,7 @@ function Form() {
         <div className="mx-auto flex justify-center">
           <div>
             <span className="text-teal-500">{currentQuestion + 1}</span>{" "}
-            <span>of {questions.length}</span>
+            <span>of {randomQuestions.length}</span>
           </div>
         </div>
       </Card>
