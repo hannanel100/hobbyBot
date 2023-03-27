@@ -1,93 +1,28 @@
-# HobbyBot
+# Create T3 App
 
-HobbyBot is a web application built using Next.js, TypeScript, Tailwind CSS, OpenAI API, Next-Auth, and Prisma. The application allows users to chat with a bot that suggests hobbies based on the user's interests. The database is hosted using Supabase, and the application is hosted on Vercel.
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
+## What's next? How do I make an app with this?
 
-1. Clone the repository using the following command:
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-```bash
-git clone https://github.com/<username>/hobby-bot.git
-```
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-2. Install the dependencies using npm or yarn:
+## Learn More
 
-```bash
-npm install
-or
-yarn
-```
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
-3. Create a `.env.local` file and add the following environment variables:
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-```bash
-OPENAPI_KEY=<your OpenAI API key>
-GOOGLE_CLIENT_ID=<your Google Client Id>
-GOOGLE_CLIENT_SECRET=<your Google Client Secret>
-DATABASE_URL=<your Supabase database URL>
-NEXTAUTH_SECRET=<a secret>
+## How do I deploy this?
 
-```
-
-
-You can get your OpenAI API key from the [OpenAI website](https://beta.openai.com/docs/api-reference/authentication). To get your Supabase database URL and anonymous key, follow the instructions on the [Supabase website](https://supabase.io/docs/guides/with-nextjs).
-
-4. Run the following command to start the application:
-
-```bash
-npm run dev
-or
-yarn run dev
-```
-
-
-The application will be available at `http://localhost:3000`.
-
-## Usage
-
-To use the application, open it in a web browser at https://hoby-bot.vercel.app. You will be prompted to log in with your email address or a social media account using Next-Auth. Once logged in, you can chat with the bot by typing your interests into the chat window. The bot will suggest hobbies based on your interests using the OpenAI API.
-
-## Deployment
-
-To deploy the application to Vercel, follow these steps:
-
-1. Create a new project on Vercel.
-
-2. Link your GitHub repository to the Vercel project.
-
-3. Set the following environment variables in the Vercel project:
-
-```bash
-OPENAPI_KEY=<your OpenAI API key>
-GOOGLE_CLIENT_ID=<your Google Client Id>
-GOOGLE_CLIENT_SECRET=<your Google Client Secret>
-DATABASE_URL=<your Supabase database URL>
-NEXTAUTH_SECRET=<a secret>
-```
-
-
-4. Configure the project settings and deploy the application.
-
-The application will be available at `https://<YOUR-PROJECT>.vercel.app`.
-
-## Contributing
-
-To contribute to the project, follow these steps:
-
-1. Fork the repository.
-
-2. Clone your fork of the repository.
-
-3. Create a new branch to work on.
-
-4. Make your changes and commit them.
-
-5. Push your changes to your fork of the repository.
-
-6. Create a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
-
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
