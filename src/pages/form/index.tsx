@@ -1,7 +1,4 @@
-"use client";
 import { useState } from "react";
-import axios from "axios";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
 import Button from "~/components/Button";
 import { IoArrowBack, IoRefresh } from "react-icons/io5";
 import Card from "~/components/Card";
@@ -160,11 +157,6 @@ const questions: Question[] = [
 function Form() {
   const { data: session } = useSession();
   const router = useRouter();
-  const queryClientLocal = useQueryClient();
-  // const userMutation = useMutation((data: any) =>
-  //   axios.patch("/api/user", data)
-  // );
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const ctx = api.useContext();
@@ -241,7 +233,6 @@ function Form() {
           {questions[currentQuestion]?.question}
         </h2>
         <div className="flex flex-col">
-          {/* TODO: style this better, maybe get rid of the radio button and just raise opacity of hovered and lower all others */}
           {questions[currentQuestion]?.options.map((option, index) => (
             <label
               key={index}

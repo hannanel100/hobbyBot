@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 import Loader from "~/components/Loader";
 import { ssgHelper } from "~/server/helpers/ssgHelper";
 
-const ProfilePage: NextPage<{ id: string }> = ({ id }) => {
+const ProfilePage: NextPage = () => {
   const { data: user } = api.user.getBySession.useQuery();
   const { data: hobbies, isError, isLoading } = api.hobbies.getAll.useQuery();
   if (isLoading)

@@ -1,8 +1,4 @@
-import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
@@ -10,7 +6,7 @@ import Loader from "~/components/Loader";
 
 export const Greeting = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   return (
     <div className="mx-4 flex flex-col gap-8 sm:mx-auto md:max-w-2xl">

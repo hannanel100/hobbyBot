@@ -52,7 +52,7 @@ const HobbyCard = ({ data }: HobbyCardProps) => {
     </>
   );
 };
-const HobbiesPage = ({ params }: { params: { id: string } }) => {
+const HobbiesPage = () => {
   const router = useRouter();
   const { data: hobbies, isLoading, isError } = api.hobbies.getAll.useQuery();
   if (isLoading) return <Loader size="lg" />;
