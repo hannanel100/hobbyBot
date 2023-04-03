@@ -4,7 +4,7 @@ import { z } from "zod";
 import {
   Configuration,
   OpenAIApi,
-  ChatCompletionResponseMessage,
+  type ChatCompletionResponseMessage,
 } from "openai";
 
 import {
@@ -23,6 +23,7 @@ type Prompt = {
 async function getHobbiesFromOpenai({ prompt }: Prompt) {
   const openai = new OpenAIApi(configuration);
   let answer: string | undefined | ChatCompletionResponseMessage = "";
+  const;
   try {
     const chatGPT = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -37,8 +38,8 @@ async function getHobbiesFromOpenai({ prompt }: Prompt) {
     });
     const chatGPTAnswer = chatGPT?.data?.choices[0]?.message;
     answer = chatGPTAnswer;
-    let regex = /\d+\./; // matches any digit followed by a period
-    let hobbiesArray = answer?.content?.split(regex).slice(1);
+    const regex = /\d+\./; // matches any digit followed by a period
+    const hobbiesArray = answer?.content?.split(regex).slice(1);
     return hobbiesArray;
   } catch (error) {
     throw new TRPCError({

@@ -1,8 +1,8 @@
 // display hobbies saved to the db according to id
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps } from "next";
 import { ssgHelper } from "~/server/helpers/ssgHelper";
 
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Loader from "~/components/Loader";
 import { api } from "~/utils/api";
@@ -56,7 +56,7 @@ const HobbiesPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { data: hobbies, isLoading, isError } = api.hobbies.getAll.useQuery();
   if (isLoading) return <Loader size="lg" />;
-  if (isError) router.push("/error");
+  if (isError) void router.push("/error");
 
   return (
     <div className="mx-auto flex flex-col gap-8 md:max-w-2xl">

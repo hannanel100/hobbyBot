@@ -170,11 +170,11 @@ function Form() {
   const ctx = api.useContext();
 
   const { mutate, isError, isSuccess, isLoading, reset } =
-  api.hobbies.post.useMutation({
+    api.hobbies.post.useMutation({
       onSuccess: async (data) => {
         console.log("🚀 ~ file: index.tsx:174 ~ onSuccess: ~ data:", data);
         await ctx.hobbies.getAll.invalidate();
-        router.push(`/hobbies/${session?.user.id}`);
+        router.push(`/hobbies/${session?.user.id || ""}`);
       },
     });
   const handleAnswer = (answer: string) => {
@@ -188,7 +188,7 @@ function Form() {
       mutate({
         prompt: questions
           .map((question, index) => {
-            return `${question.question}: ${newAnswers[index]}`;
+            return `${question.question}: ${newAnswers[index] || ""}`;
           })
           .join(". "),
       });
