@@ -15,13 +15,6 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleSignInClick = () => {
-    signIn("google");
-  };
-
-  const handleSignOutClick = () => {
-    signOut({ callbackUrl: "/" });
-  };
   const links = [
     {
       name: "Home",
@@ -29,11 +22,11 @@ const Navbar = () => {
     },
     {
       name: "Hobbies",
-      href: "/hobbies/" + session?.user.id,
+      href: `/hobbies/${session?.user.id || ""}`,
     },
     {
       name: "Profile",
-      href: "/profile/" + session?.user.id,
+      href: `/profile/${session?.user.id || ""}`,
     },
   ];
   return (
@@ -92,7 +85,7 @@ const Navbar = () => {
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 <button
                   className="rounded-md bg-teal-900 px-3 py-2 text-sm font-medium text-teal-50"
-                  onClick={handleSignOutClick}
+                  onClick={() => void signOut({ callbackUrl: "/" })}
                 >
                   Sign out
                 </button>
@@ -103,7 +96,7 @@ const Navbar = () => {
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 <button
                   className="rounded-md bg-teal-900 px-3 py-2 text-sm font-medium text-white"
-                  onClick={handleSignInClick}
+                  onClick={() => void signIn("google")}
                 >
                   Sign in
                 </button>
@@ -161,7 +154,7 @@ const Navbar = () => {
 
                 <button
                   className="rounded-md pl-3  text-left"
-                  onClick={handleSignOutClick}
+                  onClick={() => void signOut({ callbackUrl: "/" })}
                 >
                   Sign out
                 </button>
@@ -170,7 +163,7 @@ const Navbar = () => {
               <div className="space-y-1 px-2 pt-2 pb-3">
                 <button
                   className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-teal-300 hover:bg-teal-700 hover:text-white"
-                  onClick={handleSignInClick}
+                  onClick={() => void signIn("google")}
                 >
                   Sign in
                 </button>

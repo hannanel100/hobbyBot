@@ -24,7 +24,7 @@ const ProfilePage: NextPage<{ id: string }> = ({ id }) => {
           ? "You currently have no hobbies! you can add some here:"
           : `You currently have ${hobbies.length} hobbies! you can check them out here: `}
         <Link
-          href={"/hobbies/" + user?.id}
+          href={`/hobbies/${user?.id || "no-id"}`}
           className="cursor-pointer underline hover:underline sm:no-underline"
         >
           Hobbies

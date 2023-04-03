@@ -27,13 +27,13 @@ export const Greeting = () => {
         </p>
       </Card>
       {status === "authenticated" ? (
-        <Button onClick={() => router.push("/form")}>Start</Button>
+        <Button onClick={() => void router.push("/form")}>Start</Button>
       ) : status === "loading" ? (
         <Button disabled>
           <Loader size="sm" />
         </Button>
       ) : (
-        <Button onClick={() => signIn()}>Sign in</Button>
+        <Button onClick={() => void signIn()}>Sign in</Button>
       )}
     </div>
   );
