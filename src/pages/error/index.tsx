@@ -11,7 +11,7 @@ export default function Error() {
 
   useEffect(() => {
     if (status !== "loading" && session) {
-      router.push("/");
+      void router.push("/");
     }
   }, [status, session, router]);
 
@@ -28,10 +28,9 @@ export default function Error() {
             <Loader size="sm" />
           </Button>
         ) : (
-          <Button onClick={() => signIn("google")}>Sign in</Button>
+          <Button onClick={() => void signIn("google")}>Sign in</Button>
         )}
       </div>
     </main>
   );
 }
-
