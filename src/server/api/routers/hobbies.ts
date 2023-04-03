@@ -52,7 +52,7 @@ export const hobbiesRouter = createTRPCRouter({
     .input(z.object({ prompt: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const hobbies = await getHobbiesFromOpenai({ prompt: input.prompt });
-      const user = await ctx.prisma.user.update({
+      await ctx.prisma.user.update({
         where: { id: ctx.session.user.id },
         data: {
           hobbies: {
@@ -71,4 +71,12 @@ export const hobbiesRouter = createTRPCRouter({
     });
     return hobbies;
   }),
+  getAllByUserId: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const hobbies = await ctx.prisma.hobby.findMany({
+        where: { userId: input.userId },
+      });
+      return hobbies;
+    }),
 });

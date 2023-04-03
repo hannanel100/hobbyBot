@@ -6,17 +6,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Loader from "~/components/Loader";
 import { api } from "~/utils/api";
-import { env } from "~/env.mjs";
-import {
-  WhatsappShareButton,
-  WhatsappIcon,
-  FacebookShareButton,
-  FacebookIcon,
-  LinkedinShareButton,
-  LinkedinIcon,
-  TwitterShareButton,
-  TwitterIcon,
-} from "next-share";
 
 type DataObj = {
   title?: string;
@@ -63,64 +52,23 @@ const HobbyCard = ({ data }: HobbyCardProps) => {
     </>
   );
 };
-const HobbiesPage = () => {
+const ShareHobbiesPage = () => {
   const router = useRouter();
-  console.log(router.query);
-  const { data: hobbies, isLoading, isError } = api.hobbies.getAll.useQuery();
-  const localUrlForShare = `http://localhost:3000/hobbies/share/${
-    router.query.id as string
-  }`;
-  console.log(
-    "🚀 ~ file: [id].tsx:64 ~ HobbiesPage ~ localUrlForShare:",
-    localUrlForShare
-  );
-  const urlForShare = `${env.NEXT_PUBLIC_BASE_URL}/hobbies/share/${
-    router.query.id as string
-  }`;
+  const userId = router.query.id as string;
+  const {
+    data: hobbies,
+    isLoading,
+    isError,
+  } = api.hobbies.getAllByUserId.useQuery({
+    userId,
+  });
+  const { data: user } = api.user.getById.useQuery({ id: userId });
   if (isLoading) return <Loader size="lg" />;
   if (isError) void router.push("/error");
 
   return (
     <div className="mx-auto flex flex-col gap-8 md:max-w-2xl">
-      <div className="flex justify-between">
-        <h1 className="text-3xl">Hobbies Page</h1>
-        <div className="flex items-center gap-2">
-          <span className="text-sm">Share your hobbies! </span>
-          <WhatsappShareButton
-            url={localUrlForShare}
-            title={
-              "Check out my hobbies I got from HobbyBot🤖, an Ai powered app to find you your next hobby"
-            }
-            separator="🏀🎸🎮🎹 🎻🎤 "
-            blankTarget={true}
-          >
-            <WhatsappIcon size={20} round />
-          </WhatsappShareButton>
-          <FacebookShareButton
-            url={localUrlForShare}
-            quote={
-              "Check out my hobbies I got from HobbyBot🤖, an Ai powered app to find you your next hobby"
-            }
-            hashtag="#hobbybot"
-            blankTarget={true}
-          >
-            <FacebookIcon size={20} round />
-          </FacebookShareButton>
-          <LinkedinShareButton url={localUrlForShare} blankTarget={true}>
-            <LinkedinIcon size={20} round />
-          </LinkedinShareButton>
-          <TwitterShareButton
-            url={localUrlForShare}
-            title={
-              "Check out my hobbies I got from HobbyBot🤖, an Ai powered app to find you your next hobby"
-            }
-            hashtags={["hobbybot", "hobby"]}
-            blankTarget={true}
-          >
-            <TwitterIcon size={20} round />
-          </TwitterShareButton>
-        </div>
-      </div>
+      <h1 className="text-2xl">{user?.name} shared his Hobbies with you!</h1>
       <ul className="grid auto-cols-max place-content-center  gap-4 sm:grid-cols-3">
         {hobbies?.map((hobby) => {
           // replace first : with - to separate title and content
@@ -171,4 +119,4 @@ export const getStaticPaths = () => {
   return { paths: [], fallback: "blocking" };
 };
 
-export default HobbiesPage;
+export default ShareHobbiesPage;
