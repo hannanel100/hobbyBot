@@ -23,7 +23,6 @@ type Prompt = {
 async function getHobbiesFromOpenai({ prompt }: Prompt) {
   const openai = new OpenAIApi(configuration);
   let answer: string | undefined | ChatCompletionResponseMessage = "";
-  const;
   try {
     const chatGPT = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
