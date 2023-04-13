@@ -19,10 +19,39 @@ const configuration = new Configuration({
 type Prompt = {
   prompt: z.ZodString | string;
 };
+interface Hobby {
+  title: string;
+  description: string;
+}
 
+interface HobbiesResponse {
+  hobbies: Hobby[];
+}
+function extractHobbies(response?: ChatCompletionResponseMessage): Hobby[] {
+  if (!response) {
+    return [];
+  }
+
+  const content = response.content;
+  const startIndex = content.indexOf("{");
+
+  const endIndex = content.lastIndexOf("}");
+
+  if (startIndex === -1 || endIndex === -1) {
+    return [];
+  }
+
+  const hobbiesString = content.slice(startIndex, endIndex + 1);
+
+  try {
+    const hobbiesResponse = JSON.parse(hobbiesString) as HobbiesResponse;
+    return hobbiesResponse.hobbies;
+  } catch (e) {
+    return [];
+  }
+}
 async function getHobbiesFromOpenai({ prompt }: Prompt) {
   const openai = new OpenAIApi(configuration);
-  let answer: string | undefined | ChatCompletionResponseMessage = "";
   try {
     const chatGPT = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -30,16 +59,14 @@ async function getHobbiesFromOpenai({ prompt }: Prompt) {
         {
           role: "system",
           content:
-            "you are helping this user to find a hobby, based on his answers to a series of questions. each hobby idea should have a title followed by a - and a description. ",
+            "you are helping this user to find a hobby, based on his answers to a series of questions. return a javascript object with the hobbies property containing an array of objects that all have a title property and a description property. ",
         },
         { role: "user", content: prompt as unknown as string },
       ],
     });
     const chatGPTAnswer = chatGPT?.data?.choices[0]?.message;
-    answer = chatGPTAnswer;
-    const regex = /\d+\./; // matches any digit followed by a period
-    const hobbiesArray = answer?.content?.split(regex).slice(1);
-    return hobbiesArray;
+    const answer = extractHobbies(chatGPTAnswer);
+    return answer;
   } catch (error) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -58,7 +85,8 @@ export const hobbiesRouter = createTRPCRouter({
           hobbies: {
             create: hobbies?.map((hobby) => {
               return {
-                content: hobby,
+                title: hobby.title,
+                description: hobby.description,
               };
             }),
           },
