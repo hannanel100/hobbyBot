@@ -17,14 +17,10 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "next-share";
+import { type Hobby } from "@prisma/client";
 
-type DataObj = {
-  title?: string;
-  content?: string;
-  date?: string;
-};
 type HobbyCardProps = {
-  data: DataObj;
+  data: Hobby;
 };
 const HobbyCard = ({ data }: HobbyCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +33,11 @@ const HobbyCard = ({ data }: HobbyCardProps) => {
         >
           {data.title}
         </h2>
-        <p className="mb-4 text-sm text-gray-400">{data.date}</p>
+        <p className="mb-4 text-sm text-gray-400">
+          {data.createdAt.toLocaleDateString()}
+        </p>
         <p className="mb-4 first-letter:capitalize">
-          {data.content?.substring(0, 50)}...
+          {data.description.substring(0, 50)}...
         </p>
       </div>
       {isOpen && (
@@ -49,8 +47,10 @@ const HobbyCard = ({ data }: HobbyCardProps) => {
         >
           <div className=" mx-4 flex flex-col rounded-lg bg-teal-50 p-4 shadow-xl dark:bg-teal-900 md:mx-8 md:max-w-xl lg:mx-auto">
             <h2 className="mb-2 text-2xl font-bold">{data.title}</h2>
-            <p className="mb-4 text-sm text-gray-400">{data.date}</p>
-            <p className="mb-4 first-letter:capitalize">{data.content}</p>
+            <p className="mb-4 text-sm text-gray-400">
+              {data.createdAt.toLocaleDateString()}
+            </p>
+            <p className="mb-4 first-letter:capitalize">{data.description}</p>
             <button
               className="tex cursor-pointer self-center rounded-lg bg-teal-500 px-4 py-2 text-white"
               onClick={() => setIsOpen(false)}
@@ -81,9 +81,9 @@ const HobbiesPage = () => {
   if (isError) void router.push("/error");
 
   return (
-    <div className="mx-auto flex flex-col gap-8 md:max-w-2xl">
+    <div className="mx-8 flex flex-col gap-8 sm:mx-auto md:max-w-2xl">
       <div className="flex justify-between">
-        <h1 className="text-3xl">Hobbies Page</h1>
+        <h1 className="text-2xl sm:text-3xl">Hobbies Page</h1>
         <div className="flex items-center gap-2">
           <span className="text-sm">Share your hobbies! </span>
           <WhatsappShareButton
@@ -121,31 +121,11 @@ const HobbiesPage = () => {
           </TwitterShareButton>
         </div>
       </div>
-      <ul className="grid auto-cols-max place-content-center  gap-4 sm:grid-cols-3">
+      <ul className="grid auto-cols-max place-content-center gap-4 sm:grid-cols-3">
         {hobbies?.map((hobby) => {
-          // replace first : with - to separate title and content
-          hobby.content.replace(":", "-");
-          let data: DataObj = {
-            title: "",
-            content: "",
-            date: "",
-          };
-          if (hobby.content.includes(":")) {
-            data = {
-              title: hobby.content.split(":")[0],
-              content: hobby.content.split(":")[1],
-              date: hobby.createdAt.toLocaleString(),
-            };
-          } else {
-            data = {
-              title: hobby.content.split("-")[0],
-              content: hobby.content.split("-")[1],
-              date: hobby.createdAt.toLocaleString(),
-            };
-          }
           return (
             <li key={hobby.id} className="flex gap-4">
-              <HobbyCard data={data} />
+              <HobbyCard data={hobby} />
             </li>
           );
         })}

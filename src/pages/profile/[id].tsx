@@ -21,13 +21,13 @@ const ProfilePage: NextPage = () => {
       <p>Hi {user?.name}! we are happy you`ve decided to join our community!</p>
       <p>
         {hobbies.length === 0
-          ? "You currently have no hobbies! you can add some here:"
+          ? "You currently have no hobbies! you can add some here: "
           : `You currently have ${hobbies.length} hobbies! you can check them out here: `}
         <Link
-          href={`/hobbies/${user?.id || "no-id"}`}
+          href={hobbies.length === 0 ? `/` : `/hobbies/${user?.id || "no-id"}`}
           className="cursor-pointer underline hover:underline sm:no-underline"
         >
-          Hobbies
+          {hobbies.length === 0 ? "Add Hobbies" : "View Hobbies"}
         </Link>
       </p>
       <p>This page is still a work in progress...</p>
