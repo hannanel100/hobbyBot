@@ -57,9 +57,10 @@ model VerificationToken {
 }
 
 model Hobby {
-    id        String   @id @default(cuid())
-    content   String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
-    createdAt DateTime @default(now())
+    id          String   @id @default(cuid())
+    title       String
+    description String
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
+    createdAt   DateTime @default(now())
 }
