@@ -64,3 +64,16 @@ model Hobby {
     userId      String
     createdAt   DateTime @default(now())
 }
+
+model Question {
+    id       String   @id @default(cuid())
+    question String
+    options  Option[]
+}
+
+model Option {
+    id         String   @id @default(cuid())
+    option     String
+    question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+    questionId String
+}

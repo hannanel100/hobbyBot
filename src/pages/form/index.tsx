@@ -142,6 +142,10 @@ function Form() {
         router.push(`/hobbies/${session?.user.id || ""}`);
       },
     });
+
+  const { data: dbQuestions } = api.questions.getAll.useQuery();
+  console.log("🚀 ~ file: index.tsx:146 ~ Form ~ dbQuestions:", dbQuestions);
+
   const handleAnswer = (answer: string) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answer;
