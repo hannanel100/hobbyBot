@@ -126,7 +126,7 @@ const HobbiesPage = () => {
           >
             <WhatsappIcon size={20} round />
           </WhatsappShareButton>
-          <FacebookShareButton
+          {/* <FacebookShareButton
             url={localUrlForShare}
             quote={
               "Check out my hobbies I got from HobbyBot🤖, an Ai powered app to find you your next hobby"
@@ -138,7 +138,7 @@ const HobbiesPage = () => {
           </FacebookShareButton>
           <LinkedinShareButton url={localUrlForShare} blankTarget={true}>
             <LinkedinIcon size={20} round />
-          </LinkedinShareButton>
+          </LinkedinShareButton> */}
           <TwitterShareButton
             url={localUrlForShare}
             title={
