@@ -102,3 +102,6 @@ export const getStaticPaths = () => {
 };
 
 export default ShareHobbiesPage;
+
+
+

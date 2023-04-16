@@ -23,10 +23,18 @@ type HobbyCardProps = {
   data: Hobby;
 };
 const HobbyCard = ({ data }: HobbyCardProps) => {
+  const ctx = api.useContext();
+  const { mutate, isLoading, isError } = api.hobbies.deleteById.useMutation({
+    onSuccess: async () => {
+      await ctx.hobbies.getAll.invalidate();
+    },
+  });
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <div className="rounded-lg border border-teal-700 p-4 shadow-xl">
+        {/* if isLoading - show loader, if isError - show error message and delete again/ cancel buttons */}
+
         <h2
           className="mb-2 cursor-pointer text-2xl font-bold hover:underline"
           onClick={() => setIsOpen(true)}
@@ -51,12 +59,38 @@ const HobbyCard = ({ data }: HobbyCardProps) => {
               {data.createdAt.toLocaleDateString()}
             </p>
             <p className="mb-4 first-letter:capitalize">{data.description}</p>
-            <button
-              className="tex cursor-pointer self-center rounded-lg bg-teal-500 px-4 py-2 text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              Close
-            </button>
+            <div className="flex items-center justify-between">
+              <button
+                className="tex cursor-pointer self-center rounded-lg bg-teal-500 px-4 py-2 text-white"
+                onClick={() => setIsOpen(false)}
+              >
+                Close
+              </button>
+              {isLoading ? (
+                <Loader size={"sm"} />
+              ) : !isError ? (
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => {
+                    mutate({ id: data.id });
+                  }}
+                >
+                  Delete
+                </button>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <p className="text-red-500">Error deleting hobby</p>
+                  <div className="flex gap-4">
+                    <button
+                      className=" text-red-500 hover:text-red-700"
+                      onClick={() => mutate({ id: data.id })}
+                    >
+                      Delete again
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -28,28 +28,40 @@ interface HobbiesResponse {
   hobbies: Hobby[];
 }
 function extractHobbies(response?: ChatCompletionResponseMessage): Hobby[] {
+  //  the response should contain a content property with a string that has a title followed by a - then a description.
+  //  return a hobbies array with the type of Hobby[]
+  //  the hobbies array should have the following structure:
+  //  [
+  //    {
+  //      title: "hobby title",
+  //      description: "hobby description",
+  //
+  //    },
+  //  ]
+  const hobbies: Hobby[] = [];
   if (!response) {
     return [];
   }
-
-  const content = response.content;
-  const startIndex = content.indexOf("{");
-
-  const endIndex = content.lastIndexOf("}");
-
-  if (startIndex === -1 || endIndex === -1) {
-    return [];
-  }
-
-  const hobbiesString = content.slice(startIndex, endIndex + 1);
-
-  try {
-    const hobbiesResponse = JSON.parse(hobbiesString) as HobbiesResponse;
-    return hobbiesResponse.hobbies;
-  } catch (e) {
-    return [];
-  }
+  const hobbyArray = response.content.split("\r");
+  hobbyArray.forEach((hobby) => {
+    const hobbyArray = hobby.split("-");
+    console.log(
+      "🚀 ~ file: hobbies.ts:48 ~ hobbyArray.forEach ~ hobbyArray:",
+      hobbyArray
+    );
+    const hobbyObject: Hobby = {
+      title: hobbyArray[0] ? hobbyArray[0] : "no title",
+      description: hobbyArray[1] ? hobbyArray[1] : "no description",
+    };
+    hobbies.push(hobbyObject);
+  });
+  console.log(
+    "🚀 ~ file: hobbies.ts:57 ~ hobbyArray.forEach ~ hobbies:",
+    hobbies
+  );
+  return hobbies;
 }
+
 async function getHobbiesFromOpenai({ prompt }: Prompt) {
   const openai = new OpenAIApi(configuration);
   try {
@@ -59,13 +71,17 @@ async function getHobbiesFromOpenai({ prompt }: Prompt) {
         {
           role: "system",
           content:
-            "you are helping this user to find a hobby, based on his answers to a series of questions. return a javascript object with the hobbies property containing an array of objects that all have a title property and a description property. ",
+            "you are helping this user to find a hobby, based on his answers to a series of questions. each hobby idea should have a title followed by a - and a description. ",
         },
         { role: "user", content: prompt as unknown as string },
       ],
     });
     const chatGPTAnswer = chatGPT?.data?.choices[0]?.message;
     const answer = extractHobbies(chatGPTAnswer);
+    console.log(
+      "🚀 ~ file: hobbies.ts:73 ~ getHobbiesFromOpenai ~ answer:",
+      answer
+    );
     return answer;
   } catch (error) {
     throw new TRPCError({
@@ -106,5 +122,13 @@ export const hobbiesRouter = createTRPCRouter({
         where: { userId: input.userId },
       });
       return hobbies;
+    }),
+  deleteById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const deletedHobby = await ctx.prisma.hobby.delete({
+        where: { id: input.id },
+      });
+      return deletedHobby;
     }),
 });
