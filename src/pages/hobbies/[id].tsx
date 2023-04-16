@@ -104,10 +104,6 @@ const HobbiesPage = () => {
   const localUrlForShare = `http://localhost:3000/hobbies/share/${
     router.query.id as string
   }`;
-  console.log(
-    "🚀 ~ file: [id].tsx:64 ~ HobbiesPage ~ localUrlForShare:",
-    localUrlForShare
-  );
   const urlForShare = `${env.NEXT_PUBLIC_BASE_URL}/hobbies/share/${
     router.query.id as string
   }`;

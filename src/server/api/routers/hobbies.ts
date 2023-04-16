@@ -24,41 +24,37 @@ interface Hobby {
   description: string;
 }
 
-interface HobbiesResponse {
-  hobbies: Hobby[];
-}
 function extractHobbies(response?: ChatCompletionResponseMessage): Hobby[] {
-  //  the response should contain a content property with a string that has a title followed by a - then a description.
-  //  return a hobbies array with the type of Hobby[]
-  //  the hobbies array should have the following structure:
-  //  [
-  //    {
-  //      title: "hobby title",
-  //      description: "hobby description",
-  //
-  //    },
-  //  ]
   const hobbies: Hobby[] = [];
   if (!response) {
     return [];
   }
-  const hobbyArray = response.content.split("\r");
-  hobbyArray.forEach((hobby) => {
-    const hobbyArray = hobby.split("-");
-    console.log(
-      "🚀 ~ file: hobbies.ts:48 ~ hobbyArray.forEach ~ hobbyArray:",
-      hobbyArray
-    );
+  // split the response by newlines - each line is a hobby
+  const hobbiesArray = response.content.split("\n");
+  // remove empty lines
+  hobbiesArray.map((hobby) => {
+    const tempHobbyArray = hobby.split("-");
+    // if the title includes a number followed by a period in the beginning, remove it, also trimming whitespace.
+    let title: string | undefined;
+    let description: string | undefined;
+    if (tempHobbyArray.length > 0) {
+      title = tempHobbyArray?.[0];
+      description = tempHobbyArray?.[1]?.trim();
+      if (title?.includes(".")) {
+        title = title.split(".")[1]?.trim();
+      } else {
+      }
+    }
+
     const hobbyObject: Hobby = {
-      title: hobbyArray[0] ? hobbyArray[0] : "no title",
-      description: hobbyArray[1] ? hobbyArray[1] : "no description",
+      title: title ? title : "",
+      description: description ? description : "",
     };
-    hobbies.push(hobbyObject);
+    // if the title and description are not empty, add the hobby to the hobbies array.
+    if (hobbyObject.title && hobbyObject.description) {
+      hobbies.push(hobbyObject);
+    }
   });
-  console.log(
-    "🚀 ~ file: hobbies.ts:57 ~ hobbyArray.forEach ~ hobbies:",
-    hobbies
-  );
   return hobbies;
 }
 
@@ -71,7 +67,7 @@ async function getHobbiesFromOpenai({ prompt }: Prompt) {
         {
           role: "system",
           content:
-            "you are helping this user to find a hobby, based on his answers to a series of questions. each hobby idea should have a title followed by a - and a description. ",
+            "you are helping this user to find a hobby, based on his answers to a series of questions. each hobby idea should be numbered and have a title followed by a - and a description. here is an example: 1. hiking - hiking is a great way to get outside and enjoy nature. 2. pottery - pottery is a great way to express your creativity. etc. ",
         },
         { role: "user", content: prompt as unknown as string },
       ],
