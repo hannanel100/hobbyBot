@@ -1,12 +1,6 @@
-import { TRPCError } from "@trpc/server";
-
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const questionsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -36,10 +30,6 @@ export const questionsRouter = createTRPCRouter({
     .input(z.object({ max: z.number() }))
     .query(async ({ ctx, input }) => {
       const randomSkip = Math.floor(Math.random() * 4);
-      console.log(
-        "🚀 ~ file: questions.ts:40 ~ .query ~ randomSkip:",
-        randomSkip
-      );
       const questions = await ctx.prisma.question.findMany({
         select: {
           question: true,
@@ -52,14 +42,6 @@ export const questionsRouter = createTRPCRouter({
         skip: randomSkip,
         take: input.max,
       });
-      console.log(
-        "🚀 ~ file: questions.ts:56 ~ .query ~ questions:",
-        questions
-      );
-      console.log(
-        "🚀 ~ file: questions.ts:60 ~ .query ~ questions.length:",
-        questions.length
-      );
       return questions;
     }),
 });
