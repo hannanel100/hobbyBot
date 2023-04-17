@@ -99,7 +99,6 @@ const HobbyCard = ({ data }: HobbyCardProps) => {
 };
 const HobbiesPage = () => {
   const router = useRouter();
-  console.log(router.query);
   const { data: hobbies, isLoading, isError } = api.hobbies.getAll.useQuery();
   const localUrlForShare = `http://localhost:3000/hobbies/share/${
     router.query.id as string
