@@ -32,4 +32,34 @@ export const questionsRouter = createTRPCRouter({
       });
       return options;
     }),
+  getRandomQuestionsAndOptions: publicProcedure
+    .input(z.object({ max: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const randomSkip = Math.floor(Math.random() * 4);
+      console.log(
+        "🚀 ~ file: questions.ts:40 ~ .query ~ randomSkip:",
+        randomSkip
+      );
+      const questions = await ctx.prisma.question.findMany({
+        select: {
+          question: true,
+          options: {
+            select: {
+              option: true,
+            },
+          },
+        },
+        skip: randomSkip,
+        take: input.max,
+      });
+      console.log(
+        "🚀 ~ file: questions.ts:56 ~ .query ~ questions:",
+        questions
+      );
+      console.log(
+        "🚀 ~ file: questions.ts:60 ~ .query ~ questions.length:",
+        questions.length
+      );
+      return questions;
+    }),
 });
