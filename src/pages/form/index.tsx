@@ -70,11 +70,12 @@ function Form() {
     }
   );
 
+  console.log("🚀 ~ file: index.tsx:64 ~ Form ~ questions:", questions);
   // This function updates the current length state when a
   // user selects a different length.
 
   const handleLengthToggle = ({ length }: Length) => {
-    setLength({ length, value: lengthValueHash[length] });
+    setLength({ length, value: lengthValueHash[length] + 1 });
   };
 
   // This function handles the user's answer to a question.
@@ -121,6 +122,7 @@ function Form() {
   const restartHandler = () => {
     setCurrentQuestion(0);
     setAnswers([]);
+    setLength({ length: "default", value: 20 });
     if (hobbiesPostIsError || hobbiesPostIsSuccess) reset();
   };
 
@@ -160,27 +162,31 @@ function Form() {
   return (
     <div className="container mx-auto my-4 space-y-4">
       {/* three buttons, short, default and long default is selected */}
+      {/* Button Group */}
       {currentQuestion === 0 && (
         <div className="flex items-center justify-center">
           <div className="inline-flex rounded-md shadow-sm" role="group">
             <button
               type="button"
-              className="rounded-l-lg border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500"
+              className="rounded-l-lg border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-50 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
               onClick={() => handleLengthToggle({ length: "short" })}
+              disabled={length.value === lengthValueHash.short + 1}
             >
               Short
             </button>
             <button
               type="button"
-              className="border-t border-b border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500"
+              className="border-t border-b border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-50 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
               onClick={() => handleLengthToggle({ length: "default" })}
+              disabled={length.value === lengthValueHash.default + 1}
             >
               Default
             </button>
             <button
               type="button"
-              className="rounded-r-md border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500"
+              className="rounded-r-md border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-50 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
               onClick={() => handleLengthToggle({ length: "long" })}
+              disabled={length.value === lengthValueHash.long + 1}
             >
               Long
             </button>
@@ -243,13 +249,15 @@ function Form() {
           </>
         )}
 
-        {/* find the index of the question and display it */}
-        <div className="mx-auto flex justify-center">
-          <div>
-            <span className="text-teal-500">{currentQuestion + 1}</span>{" "}
-            <span>of {questions && questions.length + 1}</span>
+        {/* find the index of the question and display it unless on finalQuestion */}
+        {questions && currentQuestion < questions.length ? (
+          <div className="mx-auto flex justify-center">
+            <div>
+              <span className="text-teal-500">{currentQuestion + 1}</span>{" "}
+              <span>of {questions && questions.length}</span>
+            </div>
           </div>
-        </div>
+        ) : null}
       </Card>
 
       {currentQuestion > 0 && (
