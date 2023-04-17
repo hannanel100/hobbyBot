@@ -17,129 +17,12 @@ interface Length {
   length: "short" | "default" | "long";
   value?: number;
 }
+// need to take into account final question.
 const lengthValueHash = {
-  short: 10,
-  default: 20,
-  long: 40,
+  short: 9,
+  default: 19,
+  long: 39,
 };
-// const questions: Question[] = [
-//   {
-//     question: "What kind of outdoor activities do you enjoy?",
-//     options: ["Hiking", "Camping", "Fishing", "Biking"],
-//   },
-//   {
-//     question: "Do you prefer solitary or group activities?",
-//     options: ["Solitary", "Group", "Both", "Depends on the activity"],
-//   },
-//   {
-//     question: "How much time do you have to dedicate to a hobby?",
-//     options: [
-//       "Less than 1 hour per week",
-//       "1-3 hours per week",
-//       "3-5 hours per week",
-//       "More than 5 hours per week",
-//     ],
-//   },
-//   {
-//     question: "Do you enjoy creative or analytical pursuits?",
-//     options: ["Creative", "Analytical", "Both", "Depends on the activity"],
-//   },
-//   // {
-//   //   question: "What kind of physical activities do you enjoy?",
-//   //   options: ["Running", "Swimming", "Yoga", "Weightlifting"],
-//   // },
-//   // {
-//   //   question: "Do you prefer indoor or outdoor activities?",
-//   //   options: ["Indoor", "Outdoor", "Both", "Depends on the activity"],
-//   // },
-//   // {
-//   //   question: "How important is socializing to you?",
-//   //   options: [
-//   //     "Very important",
-//   //     "Somewhat important",
-//   //     "Not important",
-//   //     "Depends on the activity",
-//   //   ],
-//   // },
-//   // {
-//   //   question: "Do you enjoy reading or watching movies/TV shows?",
-//   //   options: ["Reading", "Watching", "Both", "Neither"],
-//   // },
-//   // {
-//   //   question: "What kind of music do you enjoy?",
-//   //   options: ["Rock", "Pop", "Hip hop", "Classical"],
-//   // },
-//   // {
-//   //   question: "Do you enjoy working with your hands?",
-//   //   options: ["Yes", "No", "Depends on the activity", "I'm not sure"],
-//   // },
-//   // {
-//   //   question: "Do you enjoy cooking or baking?",
-//   //   options: ["Cooking", "Baking", "Both", "Neither"],
-//   // },
-//   // {
-//   //   question: "Do you enjoy playing games?",
-//   //   options: ["Board games", "Video games", "Card games", "Sports games"],
-//   // },
-//   // {
-//   //   question: "What kind of art do you enjoy?",
-//   //   options: ["Drawing", "Painting", "Sculpture", "None"],
-//   // },
-//   // {
-//   //   question: "Do you enjoy learning about history or science?",
-//   //   options: ["History", "Science", "Both", "Neither"],
-//   // },
-//   // {
-//   //   question: "Do you enjoy traveling?",
-//   //   options: [
-//   //     "Yes, I love it!",
-//   //     "I like it, but don't do it often",
-//   //     "I don't really care for it",
-//   //     "I haven't done it much",
-//   //   ],
-//   // },
-
-//   // {
-//   //   question: "Do you enjoy gardening or caring for plants?",
-//   //   options: [
-//   //     "Yes, I love it!",
-//   //     "I do it occasionally",
-//   //     "I don't really do it",
-//   //     "I haven't done it much",
-//   //   ],
-//   // },
-//   // {
-//   //   question: "Do you enjoy attending concerts or live events?",
-//   //   options: [
-//   //     "Yes, I love it!",
-//   //     "I enjoy it occasionally",
-//   //     "I don't really care for it",
-//   //     "I haven't done it much",
-//   //   ],
-//   // },
-//   // {
-//   //   question: "Do you enjoy working on DIY projects or home improvement tasks?",
-//   //   options: [
-//   //     "Yes, I love it!",
-//   //     "I do it occasionally",
-//   //     "I don't really do it",
-//   //     "I haven't done it much",
-//   //   ],
-//   // },
-//   // {
-//   //   question: "Do you enjoy practicing or playing musical instruments?",
-//   //   options: [
-//   //     "Yes, I love it!",
-//   //     "I do it occasionally",
-//   //     "I don't really do it",
-//   //     "I haven't done it much",
-//   //   ],
-//   // },
-//   {
-//     question: "How many hobby ideas do you want to see?",
-//     options: ["1", "2", "3", "4"],
-//   },
-// ];
 function Form() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -205,7 +88,7 @@ function Form() {
     // Move on to the next question
     const nextQuestion = currentQuestion + 1;
     // If there are more questions, move to the next question
-    if (questions && nextQuestion < questions.length) {
+    if (questions && nextQuestion < questions.length + 1) {
       setCurrentQuestion(nextQuestion);
       // Otherwise, submit the answers
     } else {
@@ -305,36 +188,66 @@ function Form() {
         </div>
       )}
       <Card>
-        <h2 className="mb-4 text-xl font-bold">
-          {questions && questions[currentQuestion]?.question}
-        </h2>
-        <div className="flex flex-col">
-          {questions &&
-            questions[currentQuestion]?.options.map((option, index) => {
-              const optionString = option.option;
-              return (
-                <label
-                  key={index}
-                  className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out md:hover:bg-teal-900 md:hover:text-teal-50 md:dark:hover:bg-teal-50 md:dark:hover:text-teal-900`}
-                >
-                  <input
-                    type="radio"
-                    name={`question${currentQuestion}`}
-                    value={optionString}
-                    checked={answers[currentQuestion] === optionString}
-                    onChange={() => handleAnswer(optionString)}
-                    className="mr-2 hidden"
-                  />
-                  {optionString}
-                </label>
-              );
-            })}
-        </div>
+        {questions && currentQuestion < questions.length ? (
+          <>
+            <h2 className="mb-4 text-xl font-bold">
+              {questions && questions[currentQuestion]?.question}
+            </h2>
+            <div className="flex flex-col">
+              {questions &&
+                questions[currentQuestion]?.options.map((option, index) => {
+                  const optionString = option.option;
+                  return (
+                    <label
+                      key={index}
+                      className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out md:hover:bg-teal-900 md:hover:text-teal-50 md:dark:hover:bg-teal-50 md:dark:hover:text-teal-900`}
+                    >
+                      <input
+                        type="radio"
+                        name={`question${currentQuestion}`}
+                        value={optionString}
+                        checked={answers[currentQuestion] === optionString}
+                        onChange={() => handleAnswer(optionString)}
+                        className="mr-2 hidden"
+                      />
+                      {optionString}
+                    </label>
+                  );
+                })}
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className="mb-4 text-xl font-bold">{finalQuestion.question}</h2>
+            <div className="flex flex-col">
+              {finalQuestion.options.map((option, index) => {
+                const optionString = option.option;
+                return (
+                  <label
+                    key={index}
+                    className={`mb-2  w-fit cursor-pointer rounded-md p-2 transition-colors duration-200 ease-in-out md:hover:bg-teal-900 md:hover:text-teal-50 md:dark:hover:bg-teal-50 md:dark:hover:text-teal-900`}
+                  >
+                    <input
+                      type="radio"
+                      name={`question${currentQuestion}`}
+                      value={optionString}
+                      checked={answers[currentQuestion] === optionString}
+                      onChange={() => handleAnswer(optionString)}
+                      className="mr-2 hidden"
+                    />
+                    {optionString}
+                  </label>
+                );
+              })}
+            </div>
+          </>
+        )}
+
         {/* find the index of the question and display it */}
         <div className="mx-auto flex justify-center">
           <div>
             <span className="text-teal-500">{currentQuestion + 1}</span>{" "}
-            <span>of {questions && questions.length}</span>
+            <span>of {questions && questions.length + 1}</span>
           </div>
         </div>
       </Card>
