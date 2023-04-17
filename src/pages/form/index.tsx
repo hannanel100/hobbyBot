@@ -168,7 +168,7 @@ function Form() {
           <div className="inline-flex rounded-md shadow-sm" role="group">
             <button
               type="button"
-              className="rounded-l-lg border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-50 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
+              className="rounded-l-lg border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-100 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
               onClick={() => handleLengthToggle({ length: "short" })}
               disabled={length.value === lengthValueHash.short + 1}
             >
@@ -176,7 +176,7 @@ function Form() {
             </button>
             <button
               type="button"
-              className="border-t border-b border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-50 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
+              className="border-t border-b border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-100 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
               onClick={() => handleLengthToggle({ length: "default" })}
               disabled={length.value === lengthValueHash.default + 1}
             >
@@ -184,7 +184,7 @@ function Form() {
             </button>
             <button
               type="button"
-              className="rounded-r-md border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-50 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
+              className="rounded-r-md border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-900 hover:bg-teal-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 disabled:cursor-not-allowed disabled:bg-teal-100 dark:border-teal-600 dark:bg-teal-700 dark:text-white dark:hover:bg-teal-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500 disabled:dark:bg-teal-900"
               onClick={() => handleLengthToggle({ length: "long" })}
               disabled={length.value === lengthValueHash.long + 1}
             >
